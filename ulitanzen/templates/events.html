@@ -1,0 +1,9 @@
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+{% for event in events %}
+	<li style="display:block">
+
+	<h3>{{ event.title }}</h3>
+	<p>{{ event.description }}</p>
+
+	</li>
+{% endfor %}

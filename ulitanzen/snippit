@@ -1,0 +1,49 @@
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
+
+@app.route('/events', methods=['GET','POST'])
+def createEvent():
+	if request.method == 'POST':
+		
+		newEvent = Event('Christmas Party', None, None, None, None)
+		session = Session()
+		session.add(newEvent)
+		session.commit()
+		return "Created Event:" + str(newEvent.id)
+		
+	elif request.method == 'GET':
+		session = Session()
+		events = []
+		for row in session.query(Event).all():
+			events.append(todict(row))
+		return jsonify(events=events)
+	
+@app.route('/events/<int:eventID>', methods=['POST', 'GET' ,'DELETE'])
+def updateEvent(eventID):
+	print request
+	if request.method == 'POST':
+		return 'Event UPDATED: ' + str(eventID)
+	elif request.method == 'GET':
+		return 'Event: ' + str(eventID)
+	elif request.method == "DELETE":
+		return 'Event DELETED: ' + str(eventID)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+		return 'Hello'
+		
+		def todict(r):
+			def cdt(v):
+				return v.strftime("%Y-%m-%d %H:%M:%S")
+
+			d = OrderedDict()
+			for c in r.__table__.columns.keys():
+				if isinstance(type(c), DateTime):
+					d[c] = cdt(getattr(r, c))
+				else:
+					d[c] = getattr(r, c)
+			return d
+			
+db = create_engine("mysql://dev:dev@localhost/ssi", echo=True)

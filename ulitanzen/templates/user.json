@@ -1,0 +1,16 @@
+{
+	"description" : "",
+	"end_date" : "",
+	"start_date" : "",
+	"title" : "",
+	"actions" : {
+		"delete" : {
+			"method" : "DELETE",
+			"url" : ""
+		},
+		"update" : {
+			"method" : "PUT",
+			"url" : ""
+		}
+	}
+}
