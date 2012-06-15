@@ -1,6 +1,6 @@
 from flask import Flask, request,jsonify
 from ulitanzen.config import Config
-from ulitanzen.extensions import db, csrf
+from ulitanzen.extensions import db, cache
 from ulitanzen import routes
 from ulitanzen.utils import RE
 
@@ -22,7 +22,7 @@ def configure_blueprints(app, blueprints):
 
 def configure_extensions(app):
     db.init_app(app)
-    csrf.init_app(app)
+    cache.clear()
 
 def configure_errorhandlers(app):
 	

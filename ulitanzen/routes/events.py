@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify, abort, render_template
 from collections import OrderedDict
 from ulitanzen.models import Event
-from ulitanzen.extensions import db
+from ulitanzen.extensions import db,cache
 
 events = Blueprint('events', __name__, url_prefix="/events")
 
-@events.route('', methods=['GET','POST'])
+@events.route('', methods=['POST'])
 def createEvent():
 	if request.method == 'POST':
 		
@@ -14,23 +14,28 @@ def createEvent():
 		db.session.add(event)
 		db.session.commit()
 		#render_template('events.html', events=events)
-		return jsonify(event=Event.todict(event))	
-		
-	elif request.method == 'GET':
-		
+		return jsonify(event=dict(event))	
+
+@events.route('', methods=['GET'])
+def listEvents():
+	events = cache.get('all-events')
+	if events is None:
 		results = Event.query.all()
 		events = []
 		for event in results:
 			events.append(OrderedDict(event))
-        return render_template('events.html', events=events)
+		cache.set('all-events', events, timeout=5*60)		
+	return jsonify(events=events)
+
 
 @events.route('/<int:id>', methods=['GET','PUT','DELETE'])
 def updateEvent(id):
 	if request.method == 'GET':
-		
-		event = Event.query.get(id)
-		print event
-		return render_template('user.json', event=event)
+		event = cache.get('event-'+str(id))
+		if event is None:
+			event = OrderedDict(Event.query.get_or_404(id))
+			cache.set('event-'+str(id), event, timeout=5*60)
+		return jsonify(event=event)
 		
 	elif request.method == 'PUT':
 		

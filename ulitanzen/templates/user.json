@@ -1,8 +1,8 @@
 {
-	"description" : "",
+	"description" : "{{ event.description }}",
 	"end_date" : "",
 	"start_date" : "",
-	"title" : "",
+	"title" : "{{ event.title }}",
 	"actions" : {
 		"delete" : {
 			"method" : "DELETE",

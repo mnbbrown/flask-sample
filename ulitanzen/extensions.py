@@ -1,5 +1,5 @@
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.seasurf import SeaSurf
+from werkzeug.contrib.cache import MemcachedCache
 
 db = SQLAlchemy()
 
@@ -27,4 +27,4 @@ def iterfunc(self):
 db.Model.todict = todict
 db.Model.__iter__ = iterfunc
 
-csrf = SeaSurf()
+cache = MemcachedCache(['127.0.0.1:11211'])
