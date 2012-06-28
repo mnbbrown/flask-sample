@@ -5,26 +5,23 @@ from ulitanzen.extensions import db,cache
 
 events = Blueprint('events', __name__, url_prefix="/events")
 
-@events.route('', methods=['POST'])
+@events.route('/', methods=['POST'])
 def createEvent():
-	if request.method == 'POST':
-		
-		print request.args['title']	
+	if request.method == 'POST':	
 		event = Event(request.args['title'], request.args['description'], request.args['start_date'], request.args['end_date'])
 		db.session.add(event)
 		db.session.commit()
-		#render_template('events.html', events=events)
 		return jsonify(event=dict(event))	
 
-@events.route('', methods=['GET'])
-def listEvents():
+@events.route('/', methods=['GET'])
+def listEvents():    
 	events = cache.get('all-events')
 	if events is None:
 		results = Event.query.all()
 		events = []
 		for event in results:
 			events.append(OrderedDict(event))
-		cache.set('all-events', events, timeout=5*60)		
+		cache.set('all-events', events, timeout=5*60)
 	return jsonify(events=events)
 
 

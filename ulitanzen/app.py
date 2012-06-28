@@ -2,10 +2,11 @@ from flask import Flask, request,jsonify
 from ulitanzen.config import Config
 from ulitanzen.extensions import db, cache
 from ulitanzen import routes
-from ulitanzen.utils import RE
+
 
 DEFAULT_BLUEPRINTS = [
-	routes.events
+	routes.events,
+    routes.frontend
 ]
 
 def create_app():
