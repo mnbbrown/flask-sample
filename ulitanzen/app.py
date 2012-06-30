@@ -23,7 +23,7 @@ def configure_blueprints(app, blueprints):
 
 def configure_extensions(app):
     db.init_app(app)
-    cache.clear()
+    cache.flushall()
 
 def configure_errorhandlers(app):
 	

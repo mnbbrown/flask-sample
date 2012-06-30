@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, abort, render_template
 from collections import OrderedDict
 from ulitanzen.models import Event
-from ulitanzen.extensions import db,cache
+from ulitanzen.extensions import db, cache
 
 events = Blueprint('events', __name__, url_prefix="/events")
 
@@ -21,21 +21,18 @@ def listEvents():
 		events = []
 		for event in results:
 			events.append(OrderedDict(event))
-		cache.set('all-events', events, timeout=5*60)
-	return jsonify(events=events)
+		cache.set('all-events', jsonify(events=events))	
+	print events
+	return None
 
 
 @events.route('/<int:id>', methods=['GET','PUT','DELETE'])
 def updateEvent(id):
 	if request.method == 'GET':
-		event = cache.get('event-'+str(id))
-		if event is None:
-			event = OrderedDict(Event.query.get_or_404(id))
-			cache.set('event-'+str(id), event, timeout=5*60)
-		return jsonify(event=event)
+		print Event.query.get_or_404(id).dict()
+		return jsonify(event=Event.query.get_or_404(id).dict())
 		
-	elif request.method == 'PUT':
-		
+	elif request.method == 'PUT':		
 		abort(501)
 		
 	elif request.method == 'DELETE':

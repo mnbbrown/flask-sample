@@ -27,7 +27,8 @@ def logout():
 	# remove the username from the session if it's there
 	session.pop('username', None)
 	return redirect(url_for('.home'))
-@frontend.route('/log', methods=['POST'])
+
+@frontend.route('/test', methods=['GET'])
 def log():
 	print request
 	return abort(404)

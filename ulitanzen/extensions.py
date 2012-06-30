@@ -1,5 +1,6 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug.contrib.cache import MemcachedCache
+from redis import StrictRedis
 
 db = SQLAlchemy()
 
@@ -27,4 +28,5 @@ def iterfunc(self):
 db.Model.todict = todict
 db.Model.__iter__ = iterfunc
 
-cache = MemcachedCache(['127.0.0.1:11211'])
+#cache = MemcachedCache(['127.0.0.1:11211'])
+cache = StrictRedis(host='localhost', port=6379, db=0)

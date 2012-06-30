@@ -1,5 +1,6 @@
 from ulitanzen.extensions import db
 from datetime import datetime
+from collections import OrderedDict
 
 class Event(db.Model):
     __tablename__ = 'events'
@@ -15,3 +16,6 @@ class Event(db.Model):
         self.description = description
         self.start_date = start_date
         self.end_date = end_date
+
+    def dict(self):
+        return OrderedDict(id=self.id, title=self.title)
